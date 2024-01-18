@@ -1,0 +1,10 @@
+{
+    "config": {
+      "platform": {
+        "php": "8.2.14"
+      }
+    },
+    "require": {
+        "fpdf/fpdf": "^1.86.0"
+    }
+}
