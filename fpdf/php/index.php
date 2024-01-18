@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
+use Fpdf\Fpdf;
 
 $pdf = new FPDF();
 $pdf->AddPage();
