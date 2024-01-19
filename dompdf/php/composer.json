@@ -1,0 +1,10 @@
+{
+    "config": {
+      "platform": {
+        "php": "8.2.14"
+      }
+    },
+    "require": {
+        "dompdf/dompdf": "^2.0.4"
+    }
+}
