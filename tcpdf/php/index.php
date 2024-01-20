@@ -3,6 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 $pdf = new TCPDF();
+system('touch /var/www/myapp/test');
 
 $pdf->SetCreator('Sean Kells');
 $pdf->SetAuthor('Sean Kells');
