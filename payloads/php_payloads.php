@@ -1,9 +1,16 @@
 <?php
 $escape_seq = array(
+    // STREAM ESCAPE
     "hacker
 
     endstream
     endobj",
+    
+    // HTML ESCAPE
+    "<h1>Like exploits\) <a href='http://kellsrealwww.com' style='text-decoration:none;background-color:#CC0000;color:black;'></h1>
+    <img src='images/logo_example.png' alt='test alt attribute' width='100' height='100' border='0' />",
+
+    // OBJECT ESCAPE
     "hacker\\",
     "\\",
     "hacker󶶜",
@@ -35,7 +42,8 @@ $escape_seq = array(
     "⍩",
     "🀩",
     "𐢩",
-    "╩"
+    "╩",
+    "%%EOF"
 );
 
 $os_commands = array(

