@@ -12,5 +12,6 @@ Far less Text() objects than expected. Many streams
 TCPDF
 Likely no Adobe Illustrator Image File ImageEps()
 
+Want to play around with Fonts to see if multibyte characters can be manipulated into escape sequences
 
 

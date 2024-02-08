@@ -16,6 +16,9 @@ namespace main
 {
     class Program
     {
+
+        string BASE_PDF = "./decodeFlate.pdf";
+        string SEARCHED_PDF = "./writehtmlcell7.pdf";
         // Decipher what endstream would decompress into for DeFlate
         // Takes header of stream and the binary for 'endstream'
         // Did not successfully decompress
@@ -101,9 +104,6 @@ namespace main
 
 
         public static void Main() {
-            string BASE_PDF = "./decodeFlate.pdf";
-            string SEARCHED_PDF = "./directImage.pdf";
-
             // '<< stream' binary array
             byte[] start_stream_seq = parse_pdf(BASE_PDF, 525, 9);
             // 'endstream' binary array
