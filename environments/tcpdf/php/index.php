@@ -10,11 +10,10 @@ require './php_payloads.php';
 // Wipe existing PDFs
 system("rm -r /var/www/myapp/pdfs/*.pdf");
 
-
 function createPDF() {
     $pdf = new TCPDF();
     $pdf->setFont('times', '', 14, '', true);
-    $pdf->setCompression(false);
+    // $pdf->setCompression(false);
     $pdf->AddPage();
     return $pdf;
   }
@@ -23,7 +22,8 @@ function createPDF() {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetCreator($seq);
+    $pdf->SetCreator($seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/creator'.$i.'.pdf', 'F');
     $i++;
 }
@@ -32,7 +32,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetAuthor($seq);
+    $pdf->SetAuthor($seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/author'.$i.'.pdf', 'F');
     $i++;
 }
@@ -41,7 +42,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetTitle($seq);
+    $pdf->SetTitle($seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/title'.$i.'.pdf', 'F');
     $i++;
 }
@@ -50,7 +52,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetSubject($seq);
+    $pdf->SetSubject($seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/subject'.$i.'.pdf', 'F');
     $i++;
 }
@@ -59,7 +62,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetKeywords($seq);
+    $pdf->SetKeywords($seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/keywords'.$i.'.pdf', 'F');
     $i++;
 }
@@ -69,11 +73,23 @@ $imgdata = base64_decode('iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAMAAAB/2U7WAAAABlBMVE
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->Image('@'.$imgdata.$seq);
+    $pdf->Image('@'.$imgdata.$seq.$xref, 15, 140, 50, 50, '', '', '', true, 150, '', false, false, 1, false, false, false);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/directimage'.$i.'.pdf', 'F');
     $i++;
 }
 
+// Image Links
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = createPDF();
+    $pdf->Image("/var/www/myapp/images/xref.jpg", 15, 140, 50, 50, "JPEG", $seq.$xref, '', true, 150, '', false, false, 1, false, false, false);
+    $pdf->Text(20, 20, "DOGTEST");
+    $pdf->Output('/var/www/myapp/pdfs/linkimage'.$i.'.pdf', 'F');
+    $i++;
+}
+
+// Image Streams
 $i = 0;
 $path = "/var/www/myapp/images";
 if ($handle = opendir($path)) {
@@ -97,6 +113,7 @@ if ($handle = opendir($path)) {
         }
 
         $pdf->Image("/var/www/myapp/images/".$file, 15, 140, 50, 50, $ext_option, '', '', true, 150, '', false, false, 1, false, false, false);
+        $pdf->Text(20, 20, "DOGTEST");
         $pdf->Output('/var/www/myapp/pdfs/image'.$i.'.pdf', 'F');
         $i++;
     }
@@ -107,7 +124,8 @@ if ($handle = opendir($path)) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->Write(0, $seq, '', 0, 'C', true, 0, false, false, 0);
+    $pdf->Write(0, $seq.$xref, $seq.$xref, 0, 'C', true, 0, false, false, 0);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/write'.$i.'.pdf', 'F');
     $i++;
 }
@@ -116,7 +134,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->writeHTML($seq, true, false, true, false, '');
+    $pdf->writeHTML($seq.$xref, true, false, true, false, '');
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/writehtml'.$i.'.pdf', 'F');
     $i++;
 }
@@ -125,7 +144,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->writeHTMLCell(0, 0, '', '', $seq, 0, 1, 0, true, '', true);
+    $pdf->writeHTMLCell(0, 0, '', '', $seq.$xref, 0, 1, 0, true, '', true);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/writehtmlcell'.$i.'.pdf', 'F');
     $i++;
 }
@@ -136,12 +156,13 @@ foreach ($escape_seq as $seq) {
     $pdf = createPDF();
 
     $lg = Array();
-    $lg['a_meta_charset'] = $seq; 
+    $lg['a_meta_charset'] = $seq.$xref; 
     $lg['a_meta_dir'] = 'ltr';
     $lg['a_meta_language'] = 'en';
     $lg['w_page'] = 'page';
     $pdf->setLanguageArray($lg);
 
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/metachar'.$i.'.pdf', 'F');
     $i++;
 }
@@ -153,11 +174,12 @@ foreach ($escape_seq as $seq) {
 
     $lg = Array();
     $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = $seq;
+    $lg['a_meta_dir'] = $seq.$xref;
     $lg['a_meta_language'] = 'en';
     $lg['w_page'] = 'page';
     $pdf->setLanguageArray($lg);
 
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/metadir'.$i.'.pdf', 'F');
     $i++;
 }
@@ -170,10 +192,11 @@ foreach ($escape_seq as $seq) {
     $lg = Array();
     $lg['a_meta_charset'] = 'ISO-8859-1'; 
     $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = $seq;
+    $lg['a_meta_language'] = $seq.$xref;
     $lg['w_page'] = 'page';
     $pdf->setLanguageArray($lg);
 
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/metalan'.$i.'.pdf', 'F');
     $i++;
 }
@@ -187,9 +210,10 @@ foreach ($escape_seq as $seq) {
     $lg['a_meta_charset'] = 'ISO-8859-1'; 
     $lg['a_meta_dir'] = 'ltr';
     $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = $seq;
+    $lg['w_page'] = $seq.$xref;
     $pdf->setLanguageArray($lg);
 
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/metapage'.$i.'.pdf', 'F');
     $i++;
 }
@@ -198,25 +222,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->Text(20, 20, $seq);
-    $pdf->Output('/var/www/myapp/pdfs/text'.$i.'.pdf', 'F');
-    $i++;
-}
-
-// Text
-$i = 0;
-foreach ($escape_seq as $seq) {
-    $pdf = createPDF();
-    $pdf->Text(20, 20, $seq);
-    $pdf->Output('/var/www/myapp/pdfs/text'.$i.'.pdf', 'F');
-    $i++;
-}
-
-// Text
-$i = 0;
-foreach ($escape_seq as $seq) {
-    $pdf = createPDF();
-    $pdf->Text(20, 20, $seq);
+    $pdf->Text(20, 20, $seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/text'.$i.'.pdf', 'F');
     $i++;
 }
@@ -225,7 +232,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->Cell(0, 0, $seq, 1, 1, 'C', 0, '', 0);
+    $pdf->Cell(0, 0, $seq.$xref, 1, 1, 'C', 0, $seq.$xref, 0);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/cell'.$i.'.pdf', 'F');
     $i++;
 }
@@ -234,7 +242,8 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->MultiCell(20, 10, $seq, 1, 'J', false, 1, '' ,'', true);
+    $pdf->MultiCell(20, 10, $seq.$xref, 1, 'J', false, 1, '' ,'', true);
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/multicell'.$i.'.pdf', 'F');
     $i++;
 }
@@ -243,8 +252,19 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->Annotation(40, 40, 10, 10, $seq, array('Subtype'=>'Text', 'Name' => 'Comment', 'T' => $seq, 'Subj' => 'TCPDF Example', 'C' => array(255, 255, 0)));
+    $pdf->Annotation(40, 40, 10, 10, $seq.$xref, array('Subtype'=>'Text', 'Name' => 'Comment', 'T' => $seq.$xref, 'Subj' => $seq.$xref, 'C' => array(255, 255, 0)));
+    $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/annotation'.$i.'.pdf', 'F');
+    $i++;
+}
+
+// Link
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = createPDF();
+    $pdf->Link(10, 10, 30, 30, $seq.$xref);
+    $pdf->Text(20, 20, "DOGTEST");
+    $pdf->Output('/var/www/myapp/pdfs/link'.$i.'.pdf', 'F');
     $i++;
 }
 
