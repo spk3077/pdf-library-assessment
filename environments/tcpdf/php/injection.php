@@ -1,4 +1,4 @@
-<!-- File: index.php -->
+<!-- File: injection.php -->
 <!-- Assignment: MS Capstone -->
 <!-- Lanuguage: PHP -->
 <!-- Author: Sean Kells <spk3077@rit.edu> -->
