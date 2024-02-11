@@ -11,6 +11,7 @@ TCPDF
 - Likely no Adobe Illustrator Image File ImageEps()
 - Far less Text() objects than expected. Many streams
 - XML stream at the bottom escapes special characters for XML documents, but not special characters for terminating streams
+- Wanted to check different Output types EX: I, F. But there are limitations preventing more than one I in a script
 
 Want to play around with Fonts to see if multibyte characters can be manipulated into escape sequences
 

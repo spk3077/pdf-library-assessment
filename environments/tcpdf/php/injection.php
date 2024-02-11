@@ -2,7 +2,7 @@
 <!-- Assignment: MS Capstone -->
 <!-- Lanuguage: PHP -->
 <!-- Author: Sean Kells <spk3077@rit.edu> -->
-<!-- Description: Exploit Script for TCPDF -->
+<!-- Description: Exploit Script (PDF injection & Image Escape) for TCPDF -->
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 require './php_payloads.php';
@@ -48,7 +48,7 @@ foreach ($escape_seq as $seq) {
     $i++;
 }
 
-// Title
+// Subject
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
@@ -269,4 +269,4 @@ foreach ($escape_seq as $seq) {
 }
 
 ?>
-<h1 style="text-align:center;">Your PDF(s) were created </h1>
+<h1 style="text-align:center;">PDF Injection Complete!</h1>
