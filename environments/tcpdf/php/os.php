@@ -21,7 +21,7 @@ function createPDF() {
 
 function check_test_file(string $endpoint, string $command) {
     if (file_exists('/var/www/myapp/test')) {
-        echo "Endpoint: ".$endpoint."\nCommand: ".$command."\n\n\n";
+        echo "Endpoint: ".$endpoint."\nCommand: ".$command."<br/><br/>";
     }
 }
 
@@ -263,7 +263,6 @@ foreach ($os_commands as $command) {
 // Output
 foreach ($os_commands as $command) {
     $pdf = createPDF();
-    echo nl2br($command."\n");
     $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/output'.$command, 'F');
     check_test_file("Output", $command);
