@@ -90,6 +90,9 @@ foreach ($os_commands as $command) {
 // Image Links
 $i = 0;
 foreach ($os_commands as $command) {
+    if ($command[0] == "%") {
+        continue;
+    }
     $pdf = createPDF();
     $pdf->Image("/var/www/myapp/images/xref.jpg", 15, 140, 50, 50, "JPEG", $command, '', true, 150, '', false, false, 1, false, false, false);
     $pdf->Output('/var/www/myapp/pdfs/linkimage'.$i.'.pdf', 'F');
@@ -100,6 +103,9 @@ foreach ($os_commands as $command) {
 // Write
 $i = 0;
 foreach ($os_commands as $command) {
+    if ($command[0] == "%") {
+        continue;
+    }
     $pdf = createPDF();
     $pdf->Write(0, $command, $command, 0, 'C', true, 0, false, false, 0);
     $pdf->Output('/var/www/myapp/pdfs/write'.$i.'.pdf', 'F');
@@ -208,6 +214,9 @@ foreach ($os_commands as $command) {
 // Cell
 $i = 0;
 foreach ($os_commands as $command) {
+    if ($command[0] == "%") {
+        continue;
+    }
     $pdf = createPDF();
     $pdf->Cell(0, 0, $command, 1, 1, 'C', 0, $command, 0);
     $pdf->Output('/var/www/myapp/pdfs/cell'.$i.'.pdf', 'F');
@@ -218,6 +227,9 @@ foreach ($os_commands as $command) {
 // MultiCell
 $i = 0;
 foreach ($os_commands as $command) {
+    if ($command[0] == "%") {
+        continue;
+    }
     $pdf = createPDF();
     $pdf->MultiCell(20, 10, $command, 1, 'J', false, 1, '' ,'', true);
     $pdf->Output('/var/www/myapp/pdfs/multicell'.$i.'.pdf', 'F');
@@ -238,6 +250,9 @@ foreach ($os_commands as $command) {
 // Link
 $i = 0;
 foreach ($os_commands as $command) {
+    if ($command[0] == "%") {
+        continue;
+    }
     $pdf = createPDF();
     $pdf->Link(10, 10, 30, 30, $command);
     $pdf->Output('/var/www/myapp/pdfs/link'.$i.'.pdf', 'F');
@@ -248,6 +263,7 @@ foreach ($os_commands as $command) {
 // Output
 foreach ($os_commands as $command) {
     $pdf = createPDF();
+    echo nl2br($command."\n");
     $pdf->Text(20, 20, "DOGTEST");
     $pdf->Output('/var/www/myapp/pdfs/output'.$command, 'F');
     check_test_file("Output", $command);
