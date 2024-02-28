@@ -20,16 +20,3 @@ Want to play around with Fonts to see if multibyte characters can be manipulated
 Assuming that compression will always be enabled. (doesn't make much sense for authors to disable it)
 
 
-
-Literature Review:
-1. https://portswigger.net/research/portable-data-exfiltration
-2. https://www.sciencedirect.com/science/article/pii/S0164121210001287?via%3Dihub
-3. https://security.snyk.io/vuln/SNYK-RUBY-PDFKIT-2869795
-4. 
-5. 
-6. 
-7. 
-8. 
-9. 
-10. 
-
