@@ -22,7 +22,7 @@ function createPDF() {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetCreator($seq.$xref);
+    $pdf->SetCreator($seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/creator'.$i.'.pdf');
     $i++;
@@ -32,7 +32,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetTitle($seq.$xref);
+    $pdf->SetTitle($seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/title'.$i.'.pdf');
     $i++;
@@ -42,7 +42,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetAuthor($seq.$xref);
+    $pdf->SetAuthor($seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/author'.$i.'.pdf');
     $i++;
@@ -52,7 +52,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetSubject($seq.$xref);
+    $pdf->SetSubject($seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/subject'.$i.'.pdf');
     $i++;
@@ -62,7 +62,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetKeywords($seq.$xref);
+    $pdf->SetKeywords($seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/keywords'.$i.'.pdf');
     $i++;
@@ -72,10 +72,10 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetKeywords($seq.$xref);
+    $pdf->SetKeywords($seq);
 	$pdf->Annotation(
-		$seq.$xref,
-		145, 24, $seq.$xref, $seq.$xref, $seq.$xref,
+		$seq,
+		145, 24, $seq, $seq, $seq,
 		0.7, array(127, 127, 255)
 	);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
@@ -87,7 +87,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-	$pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', $seq.$xref, true, false);
+	$pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', $seq, true, false);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/linkimage'.$i.'.pdf');
     $i++;
@@ -128,7 +128,7 @@ if ($handle = opendir($path)) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->AutosizeText($seq.$xref, 20.0, 'times', '', 72);
+    $pdf->AutosizeText($seq, 20.0, 'times', '', 72);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/autosize'.$i.'.pdf');
     $i++;
@@ -138,7 +138,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->MultiCell( 20.0, 20.0, $seq.$xref);
+    $pdf->MultiCell( 20.0, 20.0, $seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/multicell'.$i.'.pdf');
     $i++;
@@ -148,7 +148,7 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->WriteHTML($seq.$xref);
+    $pdf->WriteHTML($seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/writehtml'.$i.'.pdf');
     $i++;
@@ -158,9 +158,31 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $mpdf->WriteCell(120, 120, $seq.$xref);
+    $pdf->WriteCell(120, 120, $seq);
 	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
     $pdf->OutputFile('/var/www/myapp/pdfs/writecell'.$i.'.pdf');
+    $i++;
+}
+
+// writeText HTML INPUT
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = createPDF();
+    $pdf->text_input_as_HTML = true;
+    $pdf->WriteText(60, 60, $seq);
+	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
+    $pdf->OutputFile('/var/www/myapp/pdfs/writetext_true'.$i.'.pdf');
+    $i++;
+}
+
+// writeText NO HTML INPUT
+$i = 0;
+foreach ($escape_seq as $seq) {
+    $pdf = createPDF();
+    $pdf->text_input_as_HTML = false;
+    $pdf->WriteText(60, 60, $seq);
+	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
+    $pdf->OutputFile('/var/www/myapp/pdfs/writetext_false'.$i.'.pdf');
     $i++;
 }
 
@@ -168,27 +190,69 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    // All the text to replace
+    
+    // Basic text for replacement
+    $pdf->Annotation(
+        "Replacethistext",
+        145, 24, 'Replacethistext', "Replacethistext", "Replacethistext",
+        0.7, array(127, 127, 255)
+    );
     $pdf->AutosizeText('Replacethistext', 15.0, 'times', '', 72);
-    $mpdf->WriteCell(120, 120, 'Replacethistext');
+    $pdf->WriteCell(120, 120, 'Replacethistext');
+    $pdf->WriteText(60, 60, 'Replacethistext');
     $pdf->WriteHTML('Replacethistext');
-    $pdf->WriteHTML('Replacethistext');
-    $pdf->OutputFile('/var/www/myapp/pdfs/overwritef'.$i.'.pdf');
 
-	$pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
-    $mpdf->OverWrite('/var/www/myapp/pdfs/overwritef'.$i.'.pdf', $search, $replacement, 'F', '/var/www/myapp/pdfs/overwritef'.$i.'.pdf');
+    // Backslash targetting for replacement
+    $pdf->Annotation(
+        "backslash\\",
+        145, 24, 'backslash\\', "backslash\\", "backslash\\",
+        0.7, array(127, 127, 255)
+    );
+    $pdf->AutosizeText('backslash\\', 15.0, 'times', '', 72);
+    $pdf->WriteCell(120, 120, 'backslash\\');
+    $pdf->WriteText(60, 60, 'backslash\\');
+    $pdf->WriteHTML('backslash\\');
+
+    // Parenthesis targetting for replacement
+    $pdf->Annotation(
+        ")",
+        145, 24, ')', ")", ")",
+        0.7, array(127, 127, 255)
+    );
+    $pdf->AutosizeText(')', 15.0, 'times', '', 72);
+    $pdf->WriteCell(120, 120, ')');
+    $pdf->WriteText(60, 60, ')');
+    $pdf->WriteHTML(')');
+
+    // Payload targetting for replacement
+    $pdf->Annotation(
+        $seq,
+        145, 24, $seq, $seq, $seq,
+        0.7, array(127, 127, 255)
+    );
+    $pdf->AutosizeText($seq, 15.0, 'times', '', 72);
+    $pdf->WriteCell(120, 120, $seq);
+    $pdf->WriteText(60, 60, $seq);
+    $pdf->WriteHTML($seq);
+
+    $search = array(
+        'Replacethistext',
+        'backslash\\',
+        ')',
+        $seq
+    );
+
+    $replacement = array(
+        $seq,
+        $seq,
+        '',
+        $seq
+    );
+
+    $pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
+    $pdf->OutputFile('/var/www/myapp/pdfs/overwrite1.0.'.$i.'.pdf');
+    $pdf->OverWrite('/var/www/myapp/pdfs/overwrite1.0.'.$i.'.pdf', $search, $replacement, 'F', '/var/www/myapp/pdfs/overwrite2.0.'.$i.'.pdf');
     $i++;
 }
-
-$search = array(
-	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXZZZZZZZZ'
-);
-
-$replacement = array(
-	"personalised for Jos\xc3\xa9 Bloggs",
-	"COPYRIGHT: Licensed to Jos\xc3\xa9 Bloggs"
-);
-
 ?>
 <h1 style="text-align:center;">PDF Injection Complete!</h1>

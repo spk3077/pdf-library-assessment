@@ -20,3 +20,4 @@ Want to play around with Fonts to see if multibyte characters can be manipulated
 Assuming that compression will always be enabled. (doesn't make much sense for authors to disable it)
 
 
+Try adding payload with hexdeciminal specification

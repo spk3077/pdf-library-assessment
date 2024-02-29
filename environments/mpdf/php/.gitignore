@@ -1,3 +1,6 @@
 vendor/*
+images/*
+pdfs/*
 temp/mpdf/*
 composer.lock
+php_payloads.php
