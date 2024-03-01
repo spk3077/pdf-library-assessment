@@ -21,3 +21,5 @@ Assuming that compression will always be enabled. (doesn't make much sense for a
 
 
 Try adding payload with hexdeciminal specification
+
+Reliance on PDF reader security to avoid escape sequences from triggering early

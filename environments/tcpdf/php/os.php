@@ -10,6 +10,7 @@ require './php_payloads.php';
 // Wipe existing PDFs
 system("rm -r /var/www/myapp/pdfs/*.pdf");
 
+// createPDF function contains the standard process for producing PDFs for all tests
 function createPDF() {
     $pdf = new TCPDF();
     $pdf->setFont('times', '', 14, '', true);

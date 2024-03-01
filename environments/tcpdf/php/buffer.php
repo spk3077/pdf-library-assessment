@@ -11,6 +11,7 @@ system("rm -r /var/www/myapp/pdfs/*");
 
 $MAX_COUNT = 10000;
 
+// createPDF function contains the standard process for producing PDFs for all tests
 function createPDF() {
     $pdf = new TCPDF();
     $pdf->setFont('times', '', 14, '', true);

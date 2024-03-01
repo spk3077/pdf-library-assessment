@@ -11,29 +11,32 @@ system("rm -r /var/www/myapp/pdfs/*");
 
 $MAX_COUNT = 10000;
 
-function createPDF() {
-    $pdf = new TCPDF();
-    $pdf->setFont('times', '', 14, '', true);
-    $pdf->setCompression(false);
-    $pdf->AddPage();
-    return $pdf;
+set_error_handler("warning_handler", E_WARNING);
+
+
+function warning_handler($errno, $errstr) { 
+    if (str_contains( $errstr, 'File name too long')) {
+        echo nl2br("File name too long WARNING\n");
+    }
+    else {
+        echo nl2br($errstr."\n");
+    }
 }
+
+// createPDF function contains the standard process for producing PDFs for all tests
+function createPDF() {
+	$pdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/temp']);
+	$pdf->SetCompression(false);
+	$pdf->AddPage();
+	return $pdf;
+  }
 
 // Creator
 $i = 1;
 while ($i < $MAX_COUNT) {
     $pdf = createPDF();
     $pdf->SetCreator(str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/creator.pdf', 'F');
-    $i++;
-}
-
-// Author
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->SetAuthor(str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/author.pdf', 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/creator.pdf');
     $i++;
 }
 
@@ -42,7 +45,16 @@ $i = 1;
 while ($i < $MAX_COUNT) {
     $pdf = createPDF();
     $pdf->SetTitle(str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/title.pdf', 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/title.pdf');
+    $i++;
+}
+
+// Author
+$i = 1;
+while ($i < $MAX_COUNT) {
+    $pdf = createPDF();
+    $pdf->SetAuthor(str_repeat("V", $i));
+    $pdf->OutputFile('/var/www/myapp/pdfs/author.pdf');
     $i++;
 }
 
@@ -51,7 +63,7 @@ $i = 1;
 while ($i < $MAX_COUNT) {
     $pdf = createPDF();
     $pdf->SetSubject(str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/subject.pdf', 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/subject.pdf');
     $i++;
 }
 
@@ -60,138 +72,7 @@ $i = 1;
 while ($i < $MAX_COUNT) {
     $pdf = createPDF();
     $pdf->SetKeywords(str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/keywords.pdf', 'F');
-    $i++;
-}
-
-// Direct Image Stream
-$imgdata = base64_decode('iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAMAAAB/2U7WAAAABlBMVEUAAAD///+l2Z/dAAAASUlEQVR4XqWQUQoAIAxC2/0vXZDrEX4IJTRkb7lobNUStXsB0jIXIAMSsQnWlsV+wULF4Avk9fLq2r8a5HSE35Q3eO2XP1A1wQkZSgETvDtKdQAAAABJRU5ErkJggg==');
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->Image('@'.$imgdata.str_repeat("V", $i), 15, 140, 50, 50, '', '', '', true, 150, '', false, false, 1, false, false, false);
-    $pdf->Output('/var/www/myapp/pdfs/directimage.pdf', 'F');
-    $i++;
-}
-
-// Image Links
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->Image("/var/www/myapp/images/xref.jpg", 15, 140, 50, 50, "JPEG", str_repeat("V", $i), '', true, 150, '', false, false, 1, false, false, false);
-    $pdf->Output('/var/www/myapp/pdfs/linkimage.pdf', 'F');
-    $i++;
-}
-
-// Write
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->Write(0, str_repeat("V", $i), str_repeat("V", $i), 0, 'C', true, 0, false, false, 0);
-    $pdf->Output('/var/www/myapp/pdfs/write.pdf', 'F');
-    $i++;
-}
-
-// WriteHTML
-// Not Looping because it takes a VERY long
-$pdf = createPDF();
-$pdf->writeHTML(str_repeat("V", $MAX_COUNT), true, false, true, false, '');
-$pdf->Output('/var/www/myapp/pdfs/writehtml.pdf', 'F');
-
-// WriteHTMLCell
-// Not Looping because it takes a VERY long
-$pdf = createPDF();
-$pdf->writeHTMLCell(0, 0, '', '', str_repeat("V", $MAX_COUNT), 0, 1, 0, true, '', true);
-$pdf->Output('/var/www/myapp/pdfs/writehtmlcell.pdf', 'F');
-
-// Language Array: meta_charset
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = str_repeat("V", $i); 
-    $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = 'page';
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metachar.pdf', 'F');
-    $i++;
-}
-
-// Language Array: meta_dir
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = str_repeat("V", $i);
-    $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = 'page';
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metadir.pdf', 'F');
-    $i++;
-}
-
-// Language Array: meta_lan
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = str_repeat("V", $i);
-    $lg['w_page'] = 'page';
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metalan.pdf', 'F');
-    $i++;
-}
-
-// Language Array: meta_page
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = str_repeat("V", $i);
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metapage.pdf', 'F');
-    $i++;
-}
-
-// Text
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->Text(20, 20, str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/text.pdf', 'F');
-    $i++;
-}
-
-// Cell
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->Cell(0, 0, str_repeat("V", $i), 1, 1, 'C', 0, str_repeat("V", $i), 0);
-    $pdf->Output('/var/www/myapp/pdfs/cell.pdf', 'F');
-    $i++;
-}
-
-// MultiCell
-$i = 1;
-while ($i < $MAX_COUNT) {
-    $pdf = createPDF();
-    $pdf->MultiCell(20, 10, str_repeat("V", $i), 1, 'J', false, 1, '' ,'', true);
-    $pdf->Output('/var/www/myapp/pdfs/multicell.pdf', 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/keywords.pdf');
     $i++;
 }
 
@@ -199,28 +80,97 @@ while ($i < $MAX_COUNT) {
 $i = 1;
 while ($i < $MAX_COUNT) {
     $pdf = createPDF();
-    $pdf->Annotation(40, 40, 10, 10, str_repeat("V", $i), array('Subtype'=>'Text', 'Name' => 'Comment', 'T' => str_repeat("V", $i), 'Subj' => str_repeat("V", $i), 'C' => array(255, 255, 0)));
-    $pdf->Output('/var/www/myapp/pdfs/annotation.pdf', 'F');
+	$pdf->Annotation(
+		str_repeat("V", $i),
+		145, 24, str_repeat("V", $i), str_repeat("V", $i), str_repeat("V", $i),
+		0.7, array(127, 127, 255)
+	);
+    $pdf->OutputFile('/var/www/myapp/pdfs/annotation.pdf');
     $i++;
 }
 
-// Link
+// Image Links
 $i = 1;
 while ($i < $MAX_COUNT) {
     $pdf = createPDF();
-    $pdf->Link(10, 10, 30, 30, str_repeat("V", $i));
-    $pdf->Output('/var/www/myapp/pdfs/link.pdf', 'F');
+	$pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', str_repeat("V", $i), true, false);
+    $pdf->OutputFile('/var/www/myapp/pdfs/linkimage.pdf');
     $i++;
 }
 
-// Output
-// TCPDF Error at 260 Length. File length too long. Not Buffer Overflow
+// AutosizeText
+$pdf = createPDF();
+$pdf->AutosizeText(str_repeat("V", $MAX_COUNT), 20.0, 'times', '', 72);
+$pdf->OutputFile('/var/www/myapp/pdfs/autosize.pdf');
+
+// MultiCell
+$pdf = createPDF();
+$pdf->MultiCell( 20.0, 20.0, str_repeat("V", $MAX_COUNT));
+$pdf->OutputFile('/var/www/myapp/pdfs/multicell.pdf');
+
+// writeHTML
+$pdf = createPDF();
+$pdf->WriteHTML(str_repeat("V", $MAX_COUNT));
+$pdf->OutputFile('/var/www/myapp/pdfs/writehtml.pdf');
+
+// writeCell
 $i = 1;
-while ($i < 150) {
+while ($i < $MAX_COUNT) {
     $pdf = createPDF();
-    $pdf->Text(20, 20, "DOGTEST");
-    $pdf->Output('/var/www/myapp/pdfs/output'.str_repeat("V", $i), 'F');
+    $pdf->WriteCell(120, 120, str_repeat("V", $i));
+    $pdf->OutputFile('/var/www/myapp/pdfs/writecell.pdf');
     $i++;
+}
+
+// writeText
+$i = 1;
+while ($i < $MAX_COUNT) {
+    $pdf = createPDF();
+    $pdf->WriteText(60, 60, str_repeat("V", $i));
+    $pdf->OutputFile('/var/www/myapp/pdfs/writetext.pdf');
+    $i++;
+}
+
+// Overwrite
+$pdf = createPDF();
+$pdf->SetCreator('ABC');
+$pdf->SetTitle('ABC');
+$pdf->SetAuthor('ABC');
+$pdf->SetSubject('ABC');
+$pdf->SetKeywords('ABC');
+$pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', 'ABC', true, false);
+$pdf->MultiCell( 20.0, 20.0, 'ABC');
+$pdf->WriteHTML('ABC');
+$pdf->WriteCell(120, 120, 'ABC');
+$pdf->WriteText(60, 60, 'ABC');
+$pdf->AutosizeText('ABC', 15.0, 'times', '', 72);
+$pdf->Annotation(
+    'ABC',
+    145, 24, 'ABC', 'ABC', 'ABC',
+    0.7, array(127, 127, 255)
+);
+
+$search = array('ABC');
+$replacement = array(str_repeat("V", $MAX_COUNT));
+$pdf->OutputFile('/var/www/myapp/pdfs/overwrite_1.pdf');
+$pdf->OverWrite('/var/www/myapp/pdfs/overwrite_1.pdf', $search, $replacement, 'F', '/var/www/myapp/pdfs/overwrite_2.pdf');
+
+// Output
+try {
+    $i = 1;
+    while ($i < $MAX_COUNT) {
+        $pdf = createPDF();
+        $pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
+        $pdf->OutputFile('/var/www/myapp/pdfs/output'.str_repeat("V", $i).'.pdf');
+        $i++;
+    }
+} catch (Exception $e) {
+    if (str_contains($e->getMessage(), 'Unable to create output file') && $e->getCode() == 0) {
+        echo nl2br('Unable to create output file');
+    }
+    else {
+        echo nl2br($e->getMessage()."\n");
+    }
 }
 
 ?>

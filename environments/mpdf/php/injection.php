@@ -72,7 +72,6 @@ foreach ($escape_seq as $seq) {
 $i = 0;
 foreach ($escape_seq as $seq) {
     $pdf = createPDF();
-    $pdf->SetKeywords($seq);
 	$pdf->Annotation(
 		$seq,
 		145, 24, $seq, $seq, $seq,
@@ -192,44 +191,72 @@ foreach ($escape_seq as $seq) {
     $pdf = createPDF();
     
     // Basic text for replacement
+    $pdf->SetCreator('Replacethistext');
+    $pdf->SetTitle('Replacethistext');
+    $pdf->SetAuthor('Replacethistext');
+    $pdf->SetSubject('Replacethistext');
+    $pdf->SetKeywords('Replacethistext');
     $pdf->Annotation(
         "Replacethistext",
         145, 24, 'Replacethistext', "Replacethistext", "Replacethistext",
         0.7, array(127, 127, 255)
     );
+    $pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', 'Replacethistext', true, false);
+    $pdf->MultiCell( 20.0, 20.0, 'Replacethistext');
     $pdf->AutosizeText('Replacethistext', 15.0, 'times', '', 72);
     $pdf->WriteCell(120, 120, 'Replacethistext');
     $pdf->WriteText(60, 60, 'Replacethistext');
     $pdf->WriteHTML('Replacethistext');
 
     // Backslash targetting for replacement
+    $pdf->SetCreator('backslash\\');
+    $pdf->SetTitle('backslash\\');
+    $pdf->SetAuthor('backslash\\');
+    $pdf->SetSubject('backslash\\');
+    $pdf->SetKeywords('backslash\\');
     $pdf->Annotation(
         "backslash\\",
         145, 24, 'backslash\\', "backslash\\", "backslash\\",
         0.7, array(127, 127, 255)
     );
+    $pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', 'backslash\\', true, false);
+    $pdf->MultiCell( 20.0, 20.0, 'backslash\\');
     $pdf->AutosizeText('backslash\\', 15.0, 'times', '', 72);
     $pdf->WriteCell(120, 120, 'backslash\\');
     $pdf->WriteText(60, 60, 'backslash\\');
     $pdf->WriteHTML('backslash\\');
 
     // Parenthesis targetting for replacement
+    $pdf->SetCreator(')');
+    $pdf->SetTitle(')');
+    $pdf->SetAuthor(')');
+    $pdf->SetSubject(')');
+    $pdf->SetKeywords(')');
     $pdf->Annotation(
         ")",
         145, 24, ')', ")", ")",
         0.7, array(127, 127, 255)
     );
+    $pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', ')', true, false);
+    $pdf->MultiCell( 20.0, 20.0, ')');
     $pdf->AutosizeText(')', 15.0, 'times', '', 72);
     $pdf->WriteCell(120, 120, ')');
     $pdf->WriteText(60, 60, ')');
     $pdf->WriteHTML(')');
 
     // Payload targetting for replacement
+    $pdf->SetCreator($seq);
+    $pdf->SetTitle($seq);
+    $pdf->SetAuthor($seq);
+    $pdf->SetSubject($seq);
+    $pdf->SetKeywords($seq);
     $pdf->Annotation(
         $seq,
         145, 24, $seq, $seq, $seq,
         0.7, array(127, 127, 255)
     );
+    $pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', $seq, true, false);
+    $pdf->MultiCell( 20.0, 20.0, $seq);
     $pdf->AutosizeText($seq, 15.0, 'times', '', 72);
     $pdf->WriteCell(120, 120, $seq);
     $pdf->WriteText(60, 60, $seq);
