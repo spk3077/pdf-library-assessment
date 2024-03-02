@@ -14,6 +14,7 @@ system("rm -r /var/www/myapp/pdfs/*.pdf");
 function createPDF() {
 	$pdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/temp']);
 	$pdf->SetCompression(false);
+    
 	$pdf->AddPage();
 	return $pdf;
   }

@@ -1,6 +1,6 @@
 vendor/*
 images/*
-pdfs/*
+pdfs/*.pdf
 php_payloads.php
 dos.php
 composer.lock
