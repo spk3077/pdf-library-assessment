@@ -11,6 +11,16 @@ system("rm -r /var/www/myapp/pdfs/*");
 
 $MAX_COUNT = 10000;
 
+set_error_handler("warning_handler", E_WARNING);
+function warning_handler($errno, $errstr) { 
+    if (str_contains( $errstr, 'File name too long')) {
+        echo nl2br("File name too long WARNING\n");
+    }
+    else {
+        echo nl2br($errstr."\n");
+    }
+}
+
 // createPDF function contains the standard process for producing PDFs for all tests
 function createPDF() {
     $pdf = new TCPDF();

@@ -8,7 +8,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 require './php_payloads.php';
 
 // Wipe existing PDFs
-system("rm -r /var/www/myapp/pdfs/*.pdf");
+system("rm -r /var/www/myapp/pdfs/*");
 
 // createPDF function contains the standard process for producing PDFs for all tests
 function createPDF() {
@@ -31,18 +31,8 @@ $i = 0;
 foreach ($os_commands as $command) {
     $pdf = createPDF();
     $pdf->SetCreator($command);
-    $pdf->Output('/var/www/myapp/pdfs/creator'.$i.'.pdf', 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/creator'.$i.'.pdf');
     check_test_file("SetCreator", $command);
-    $i++;
-}
-
-// Author
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-    $pdf->SetAuthor($command);
-    $pdf->Output('/var/www/myapp/pdfs/author'.$i.'.pdf', 'F');
-    check_test_file("SetAuthor", $command);
     $i++;
 }
 
@@ -51,8 +41,18 @@ $i = 0;
 foreach ($os_commands as $command) {
     $pdf = createPDF();
     $pdf->SetTitle($command);
-    $pdf->Output('/var/www/myapp/pdfs/title'.$i.'.pdf', 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/title'.$i.'.pdf');
     check_test_file("SetTitle", $command);
+    $i++;
+}
+
+// Author
+$i = 0;
+foreach ($os_commands as $command) {
+    $pdf = createPDF();
+    $pdf->SetAuthor($command);
+    $pdf->OutputFile('/var/www/myapp/pdfs/author'.$i.'.pdf');
+    check_test_file("SetAuthor", $command);
     $i++;
 }
 
@@ -76,195 +76,117 @@ foreach ($os_commands as $command) {
     $i++;
 }
 
-// Direct Image Stream
-$imgdata = base64_decode('iVBORw0KGgoAAAANSUhEUgAAABwAAAASCAMAAAB/2U7WAAAABlBMVEUAAAD///+l2Z/dAAAASUlEQVR4XqWQUQoAIAxC2/0vXZDrEX4IJTRkb7lobNUStXsB0jIXIAMSsQnWlsV+wULF4Avk9fLq2r8a5HSE35Q3eO2XP1A1wQkZSgETvDtKdQAAAABJRU5ErkJggg==');
+// Annotation
 $i = 0;
 foreach ($os_commands as $command) {
     $pdf = createPDF();
-    $pdf->Image('@'.$imgdata.$command, 15, 140, 50, 50, '', '', '', true, 150, '', false, false, 1, false, false, false);
-    $pdf->Output('/var/www/myapp/pdfs/directimage'.$i.'.pdf', 'F');
-    check_test_file("DirectImage", $command);
+	$pdf->Annotation(
+		$command,
+		145, 24, $command, $command, $command,
+		0.7, array(127, 127, 255)
+	);
+    $pdf->OutputFile('/var/www/myapp/pdfs/annotation'.$i.'.pdf');
+    check_test_file("Annotation", $command);
     $i++;
 }
 
 // Image Links
 $i = 0;
 foreach ($os_commands as $command) {
-    if ($command[0] == "%") {
-        continue;
-    }
     $pdf = createPDF();
-    $pdf->Image("/var/www/myapp/images/xref.jpg", 15, 140, 50, 50, "JPEG", $command, '', true, 150, '', false, false, 1, false, false, false);
-    $pdf->Output('/var/www/myapp/pdfs/linkimage'.$i.'.pdf', 'F');
-    check_test_file("ImageLink", $command);
+	$pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', $command, true, false);
+    $pdf->OutputFile('/var/www/myapp/pdfs/linkimage'.$i.'.pdf');
+    check_test_file("LinkImage", $command);
     $i++;
 }
 
-// Write
-$i = 0;
-foreach ($os_commands as $command) {
-    if ($command[0] == "%") {
-        continue;
-    }
-    $pdf = createPDF();
-    $pdf->Write(0, $command, $command, 0, 'C', true, 0, false, false, 0);
-    $pdf->Output('/var/www/myapp/pdfs/write'.$i.'.pdf', 'F');
-    check_test_file("Write", $command);
-    $i++;
-}
-
-// WriteHTML
+// AutosizeText
 $i = 0;
 foreach ($os_commands as $command) {
     $pdf = createPDF();
-    $pdf->writeHTML($command, true, false, true, false, '');
-    $pdf->Output('/var/www/myapp/pdfs/writehtml'.$i.'.pdf', 'F');
-    check_test_file("writeHTML", $command);
-    $i++;
-}
-
-// WriteHTMLCell
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-    $pdf->writeHTMLCell(0, 0, '', '', $command, 0, 1, 0, true, '', true);
-    $pdf->Output('/var/www/myapp/pdfs/writehtmlcell'.$i.'.pdf', 'F');
-    check_test_file("writeHTMLCell", $command);
-    $i++;
-}
-
-// Language Array: meta_charset
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = $command; 
-    $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = 'page';
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metachar'.$i.'.pdf', 'F');
-    check_test_file("MetaChar", $command);
-    $i++;
-}
-
-// Language Array: meta_dir
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = $command;
-    $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = 'page';
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metadir'.$i.'.pdf', 'F');
-    check_test_file("MetaDir", $command);
-    $i++;
-}
-
-// Language Array: meta_lan
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = $command;
-    $lg['w_page'] = 'page';
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metalan'.$i.'.pdf', 'F');
-    check_test_file("Metalan", $command);
-    $i++;
-}
-
-// Language Array: meta_page
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-
-    $lg = Array();
-    $lg['a_meta_charset'] = 'ISO-8859-1'; 
-    $lg['a_meta_dir'] = 'ltr';
-    $lg['a_meta_language'] = 'en';
-    $lg['w_page'] = $command;
-    $pdf->setLanguageArray($lg);
-
-    $pdf->Output('/var/www/myapp/pdfs/metapage'.$i.'.pdf', 'F');
-    check_test_file("Metapage", $command);
-    $i++;
-}
-
-// Text
-$i = 0;
-foreach ($os_commands as $command) {
-    $pdf = createPDF();
-    $pdf->Text(20, 20, $command);
-    $pdf->Output('/var/www/myapp/pdfs/text'.$i.'.pdf', 'F');
-    check_test_file("Text", $command);
-    $i++;
-}
-
-// Cell
-$i = 0;
-foreach ($os_commands as $command) {
-    if ($command[0] == "%") {
-        continue;
-    }
-    $pdf = createPDF();
-    $pdf->Cell(0, 0, $command, 1, 1, 'C', 0, $command, 0);
-    $pdf->Output('/var/www/myapp/pdfs/cell'.$i.'.pdf', 'F');
-    check_test_file("Cell", $command);
+    $pdf->AutosizeText($command, 20.0, 'times', '', 72);
+    $pdf->OutputFile('/var/www/myapp/pdfs/autosize'.$i.'.pdf');
+    check_test_file("AutosizeText", $command);
     $i++;
 }
 
 // MultiCell
 $i = 0;
 foreach ($os_commands as $command) {
-    if ($command[0] == "%") {
-        continue;
-    }
     $pdf = createPDF();
-    $pdf->MultiCell(20, 10, $command, 1, 'J', false, 1, '' ,'', true);
-    $pdf->Output('/var/www/myapp/pdfs/multicell'.$i.'.pdf', 'F');
+    $pdf->MultiCell( 20.0, 20.0, $command);
+    $pdf->OutputFile('/var/www/myapp/pdfs/multicell'.$i.'.pdf');
     check_test_file("MultiCell", $command);
     $i++;
 }
 
-// Annotation
+// writeHTML
 $i = 0;
 foreach ($os_commands as $command) {
     $pdf = createPDF();
-    $pdf->Annotation(40, 40, 10, 10, $command, array('Subtype'=>'Text', 'Name' => 'Comment', 'T' => $command, 'Subj' => $command, 'C' => array(255, 255, 0)));
-    $pdf->Output('/var/www/myapp/pdfs/annotation'.$i.'.pdf', 'F');
-    check_test_file("Annotation", $command);
+    $pdf->WriteHTML($command);
+    $pdf->OutputFile('/var/www/myapp/pdfs/writehtml'.$i.'.pdf');
+    check_test_file("writeHTML", $command);
     $i++;
 }
 
-// Link
+// writeCell
 $i = 0;
 foreach ($os_commands as $command) {
-    if ($command[0] == "%") {
-        continue;
-    }
     $pdf = createPDF();
-    $pdf->Link(10, 10, 30, 30, $command);
-    $pdf->Output('/var/www/myapp/pdfs/link'.$i.'.pdf', 'F');
-    check_test_file("Link", $command);
+    $pdf->WriteCell(120, 120, $command);
+    $pdf->OutputFile('/var/www/myapp/pdfs/writecell'.$i.'.pdf');
+    check_test_file("writeCell", $command);
+    $i++;
+}
+
+// writeText
+$i = 0;
+foreach ($os_commands as $command) {
+    $pdf = createPDF();
+    $pdf->WriteText(60, 60, $command);
+    $pdf->OutputFile('/var/www/myapp/pdfs/writetext_true'.$i.'.pdf');
+    check_test_file("writeText", $command);
+    $i++;
+}
+
+// Overwrite
+$i = 0;
+foreach ($os_commands as $command) {
+    $pdf = createPDF();
+    
+    // Basic text for replacement
+    $pdf->SetCreator('Replacethistext');
+    $pdf->SetTitle('Replacethistext');
+    $pdf->SetAuthor('Replacethistext');
+    $pdf->SetSubject('Replacethistext');
+    $pdf->SetKeywords('Replacethistext');
+    $pdf->Annotation(
+        "Replacethistext",
+        145, 24, 'Replacethistext', "Replacethistext", "Replacethistext",
+        0.7, array(127, 127, 255)
+    );
+    $pdf->Image("/var/www/myapp/images/xref.jpg", 0, 0, 210, 297, 'jpg', 'Replacethistext', true, false);
+    $pdf->MultiCell( 20.0, 20.0, 'Replacethistext');
+    $pdf->AutosizeText('Replacethistext', 15.0, 'times', '', 72);
+    $pdf->WriteCell(120, 120, 'Replacethistext');
+    $pdf->WriteText(60, 60, 'Replacethistext');
+    $pdf->WriteHTML('Replacethistext');
+
+    $search = array('Replacethistext');
+
+    $replacement = array($command);
+
+    $pdf->OutputFile('/var/www/myapp/pdfs/overwrite1.0.'.$i.'.pdf');
+    $pdf->OverWrite('/var/www/myapp/pdfs/overwrite1.0.'.$i.'.pdf', $search, $replacement, 'F', '/var/www/myapp/pdfs/overwrite2.0.'.$i.'.pdf');
+    check_test_file("Replacement", $command);
     $i++;
 }
 
 // Output
 foreach ($os_commands as $command) {
     $pdf = createPDF();
-    $pdf->Text(20, 20, "DOGTEST");
-    $pdf->Output('/var/www/myapp/pdfs/output'.$command, 'F');
+    $pdf->OutputFile('/var/www/myapp/pdfs/output'.$command);
     check_test_file("Output", $command);
     $i++;
 }

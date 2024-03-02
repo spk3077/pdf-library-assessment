@@ -12,8 +12,6 @@ system("rm -r /var/www/myapp/pdfs/*");
 $MAX_COUNT = 10000;
 
 set_error_handler("warning_handler", E_WARNING);
-
-
 function warning_handler($errno, $errstr) { 
     if (str_contains( $errstr, 'File name too long')) {
         echo nl2br("File name too long WARNING\n");
@@ -160,7 +158,6 @@ try {
     $i = 1;
     while ($i < $MAX_COUNT) {
         $pdf = createPDF();
-        $pdf->AutosizeText('DOGTEST', 15.0, 'times', '', 72);
         $pdf->OutputFile('/var/www/myapp/pdfs/output'.str_repeat("V", $i).'.pdf');
         $i++;
     }
