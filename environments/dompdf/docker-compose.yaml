@@ -19,7 +19,7 @@ services:
       - 80:80
 
   php:
-    image: php:8.2-fpm
+    build: .
     volumes:
       - ./php:/var/www/myapp/
       - ./docker/php.ini:/usr/local/etc/php/php.ini
