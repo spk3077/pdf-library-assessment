@@ -76,7 +76,8 @@ foreach ($escape_seq as $seq) {
     $canvas = $pdf->getCanvas();
 
     $canvas->add_link($seq, 30, 30, 50, 50);
-    // $canvas->text(20, 20, 'DOGTEST', '/var/www/myapp/vendor/dompdf/dompdf/lib/fonts/Courier/', 18);
+    // $canvas->image("/var/www/myapp/images/xref.jpg", 70, 70, 50, 50, "normal");
+    $canvas->text(20, 20, 'DOGTEST', '/var/www/myapp/vendor/dompdf/dompdf/lib/fonts/Courier/', 18);
 
     $canvas->save();
     $output = $pdf->output($options = [0]);

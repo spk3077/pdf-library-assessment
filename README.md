@@ -23,3 +23,7 @@ Assuming that compression will always be enabled. (doesn't make much sense for a
 Try adding payload with hexdeciminal specification
 
 Reliance on PDF reader security to avoid escape sequences from triggering early
+
+Many times the tested function appends the new object at the end of the PDF which hinders testing since we'd like the object being tested in the forefront so it breaks later objects
+
+Python Payloads could not have 0A normally, instead replaced with hex variant
