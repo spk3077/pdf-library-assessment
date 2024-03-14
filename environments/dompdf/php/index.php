@@ -76,7 +76,6 @@ foreach ($escape_seq as $seq) {
     $canvas = $pdf->getCanvas();
 
     $canvas->add_link($seq, 30, 30, 50, 50);
-    // $canvas->image("/var/www/myapp/images/xref.jpg", 70, 70, 50, 50, "normal");
     $canvas->text(20, 20, 'DOGTEST', '/var/www/myapp/vendor/dompdf/dompdf/lib/fonts/Courier/', 18);
 
     $canvas->save();
@@ -115,7 +114,7 @@ if ($handle = opendir($path)) {
         $canvas->text(20, 20, 'DOGTEST', '/var/www/myapp/vendor/dompdf/dompdf/lib/fonts/Courier/', 18);
 
         $canvas->save();
-        $output = $pdf->output();
+        $output = $pdf->output($options = [0]);
         file_put_contents('/var/www/myapp/pdfs/image'.$i.'.pdf', $output);
         $i++;
     }

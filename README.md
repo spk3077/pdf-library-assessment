@@ -27,3 +27,5 @@ Reliance on PDF reader security to avoid escape sequences from triggering early
 Many times the tested function appends the new object at the end of the PDF which hinders testing since we'd like the object being tested in the forefront so it breaks later objects
 
 Python Payloads could not have 0A normally, instead replaced with hex variant
+
+Move some comparisons in literature review to methodology. Went too overboard in literature view (too good)
