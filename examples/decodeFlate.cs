@@ -105,7 +105,7 @@ namespace main
             // '<< stream' binary array
             // static string BASE_PDF = "./decodeFlate.pdf";
             string BASEDOMPDF_PDF = "./decodeFlate2.pdf";
-            string SEARCHED_PDF = "./add_link1.pdf";
+            string SEARCHED_PDF = "./page_text150.pdf";
 
             // For Normal PDFs
             // byte[] start_stream_seq = parse_pdf(BASE_PDF, 525, 9);
