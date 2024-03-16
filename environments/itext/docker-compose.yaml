@@ -1,0 +1,34 @@
+# File: docker-compose.yaml
+# Assignment: MS Capstone
+# Lanuguage: YAML
+# Author: Sean Kells <spk3077@rit.edu>
+# Description: Runs IText environment and exploit
+version: "3"
+
+services:
+  # Web Server
+  nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./php:/var/www/myapp/
+      - ./docker/site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    ports:
+      - 80:80
+
+  php:
+    image: php:8.2-fpm
+    volumes:
+      - ./php:/var/www/myapp/
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
+      - ../../payloads/images/injected:/var/www/myapp/images
+      - ../../payloads/php_payloads.php:/var/www/myapp/php_payloads.php
+      - ../../payloads/dos.php:/var/www/myapp/dos.php
+  
+  composer:
+    image: composer:2.6.6
+    command: ["composer", "install"]
+    volumes:
+      - ./php:/app
