@@ -8,9 +8,7 @@ version: "3.8"
 services:
   # Maven Build JARs
   build_jars:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile_build
+    image: maven:3.8.5-openjdk-17
     volumes:
       - ./springboot:/app
     working_dir: /app
@@ -18,10 +16,11 @@ services:
 
   # Springboot
   springboot:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile_spring
-    restart: always
+    image: eclipse-temurin:17-jdk-alpine
+    volumes:
+      - ./springboot/target/IText-1.0.0.jar:/app.jar
+    working_dir: /
+    entrypoint: ["java","-jar","/app.jar"]
     depends_on:
       build_jars:
         condition: service_completed_successfully
