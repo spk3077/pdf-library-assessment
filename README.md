@@ -31,3 +31,5 @@ Python Payloads could not have 0A normally, instead replaced with hex variant
 Move some comparisons in literature review to methodology. Went too overboard in literature view (too good
 
 PikePDF was originallly used for Annotation testing but was found to modify Unicocde)
+
+sudo apt install maven
