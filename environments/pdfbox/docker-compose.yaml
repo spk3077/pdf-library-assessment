@@ -3,32 +3,27 @@
 # Lanuguage: YAML
 # Author: Sean Kells <spk3077@rit.edu>
 # Description: Runs PDFBox environment and exploit
-version: "3"
+version: "3.8"
 
 services:
-  # Web Server
-  nginx:
-    image: nginx:latest
-    restart: always
+  # Maven Build JARs
+  build_jars:
+    image: maven:3.8.5-openjdk-17
     volumes:
-      - ./php:/var/www/myapp/
-      - ./docker/site.conf:/etc/nginx/conf.d/default.conf
+      - ./springboot:/app
+    working_dir: /app
+    command: mvn clean package
+
+  # Springboot
+  springboot:
+    image: eclipse-temurin:17-jdk-alpine
+    volumes:
+      - ./springboot/target/PDFBox-1.0.0.jar:/app.jar
+      - ./pdfs:/pdfs
+    working_dir: /
+    entrypoint: ["java","-jar","/app.jar"]
     depends_on:
-      - php
+      build_jars:
+        condition: service_completed_successfully
     ports:
       - 80:80
-
-  php:
-    image: php:8.2-fpm
-    volumes:
-      - ./php:/var/www/myapp/
-      - ./docker/php.ini:/usr/local/etc/php/php.ini
-      - ../../payloads/images/injected:/var/www/myapp/images
-      - ../../payloads/php_payloads.php:/var/www/myapp/php_payloads.php
-      - ../../payloads/dos.php:/var/www/myapp/dos.php
-  
-  composer:
-    image: composer:2.6.6
-    command: ["composer", "install"]
-    volumes:
-      - ./php:/app

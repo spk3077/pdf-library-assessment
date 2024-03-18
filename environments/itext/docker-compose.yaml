@@ -19,6 +19,7 @@ services:
     image: eclipse-temurin:17-jdk-alpine
     volumes:
       - ./springboot/target/IText-1.0.0.jar:/app.jar
+      - ./pdfs:/pdfs
     working_dir: /
     entrypoint: ["java","-jar","/app.jar"]
     depends_on:
@@ -26,13 +27,3 @@ services:
         condition: service_completed_successfully
     ports:
       - 80:80
-
-  # php:
-  #   image: php:8.2-fpm
-  #   volumes:
-  #     - ./php:/var/www/myapp/
-  #     - ./docker/php.ini:/usr/local/etc/php/php.ini
-  #     - ../../payloads/images/injected:/var/www/myapp/images
-  #     - ../../payloads/php_payloads.php:/var/www/myapp/php_payloads.php
-  #     - ../../payloads/dos.php:/var/www/myapp/dos.php
-
