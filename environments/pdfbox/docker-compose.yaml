@@ -15,16 +15,16 @@ services:
     command: mvn clean package
 
   # Springboot
-  # springboot:
-  #   image: eclipse-temurin:17-jdk-alpine
-  #   volumes:
-  #     - ./springboot/target/PDFBox-1.0.0.jar:/app.jar
-  #     - ./pdfs:/pdfs
-  #     - ../../payloads/images/injected:/images
-  #   working_dir: /
-  #   entrypoint: ["java","-jar","/app.jar"]
-  #   depends_on:
-  #     build_jars:
-  #       condition: service_completed_successfully
-  #   ports:
-  #     - 80:80
+  springboot:
+    image: eclipse-temurin:17-jdk-alpine
+    volumes:
+      - ./springboot/target/PDFBox-1.0.0.jar:/app.jar
+      - ./pdfs:/pdfs
+      - ../../payloads/images/injected:/images
+    working_dir: /
+    entrypoint: ["java","-jar","/app.jar"]
+    depends_on:
+      build_jars:
+        condition: service_completed_successfully
+    ports:
+      - 80:80
