@@ -20,6 +20,7 @@ services:
     volumes:
       - ./springboot/target/IText-1.0.0.jar:/app.jar
       - ./pdfs:/pdfs
+      - ../../payloads/images/injected:/images
     working_dir: /
     entrypoint: ["java","-jar","/app.jar"]
     depends_on:
