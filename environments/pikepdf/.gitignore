@@ -1,0 +1,9 @@
+pdfs/*.pdf
+pikepdf_test/py_payloads.py
+pikepdf_test/pikepdf_test/__pycache__/
+pikepdf_test/__pycache__/
+pikepdf_test/base/__pycache__/
+pikepdf_test/buffer/__pycache__/
+pikepdf_test/injection/__pycache__/
+pikepdf_test/osi/__pycache__/
+pikepdf_test/pikepdf_test/__pycache__/

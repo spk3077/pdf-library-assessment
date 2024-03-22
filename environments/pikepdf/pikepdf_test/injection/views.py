@@ -26,7 +26,6 @@ def generate_stamp(msg, xy):
 
 
 def index(request):
-
     # Text
     count = 0
     for seq in escape_seq:
@@ -42,7 +41,7 @@ def index(request):
                 stamp_text = pdf.make_stream(b'q 1 0 0 1 0 0 cm %s Do Q' % formx_name)
 
                 pdf.pages[i].contents_add(stamp_text)
-            pdf.save('/pdfs/text' + str(seq) + ".pdf")
+            pdf.save("/pdfs/text" + str(seq) + ".pdf")
             count += 1
 
     # URI
@@ -53,19 +52,15 @@ def index(request):
         link_annotation = pikepdf.Dictionary(
             Type=pikepdf.Name('/Annot'),
             Subtype=pikepdf.Name('/Link'),
-            Rect=[0, 0, 100, 100],  # The position where the link will appear [llx, lly, urx, ury]
+            Rect=[0, 0, 100, 100],
             Border=[0, 0, 1],
             A=pikepdf.Dictionary(
                 S=pikepdf.Name('/URI'),
                 URI=seq
-    )
-)
-
-        # Add the link annotation to the first page
+            )
+        )
         pdf.pages[0].add_annotation(link_annotation)
+        pdf.save("/pdfs/uri" + str(seq) + ".pdf")
+        count += 1
 
-        # Save the modified PDF
-        pdf.save('example_with_link.pdf')
-
-        pdf.save('output.pdf')
     return HttpResponse("INJECTION")
