@@ -1,0 +1,8 @@
+pdfs/*.pdf
+pymupdf_test/py_payloads.py
+pymupdf_test/pymupdf_test/__pycache__/
+pymupdf_test/__pycache__/
+pymupdf_test/base/__pycache__/
+pymupdf_test/buffer/__pycache__/
+pymupdf_test/injection/__pycache__/
+pymupdf_test/osi/__pycache__/
