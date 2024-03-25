@@ -33,3 +33,5 @@ Move some comparisons in literature review to methodology. Went too overboard in
 PikePDF was originallly used for Annotation testing but was found to modify Unicocde)
 
 sudo apt install maven
+
+ReportLab may have been a better option for python PDF generation testing

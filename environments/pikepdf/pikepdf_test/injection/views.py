@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 import sys
+import os
 
 import pikepdf
 from pikepdf import Array, Pdf, Stream
@@ -10,6 +11,16 @@ sys.path.insert(0, "/usr/src/app")
 from py_payloads import escape_seq
 
 def index(request):
+    # Delete existing PDFs
+    file_paths = []  # List to store file paths
+    for root, directories, files in os.walk("/pdfs/"):
+        for filename in files:
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)
+
+    for pdf_path in file_paths:
+        os.unlink(pdf_path)
+
     pikepdf.settings.set_flate_compression_level(0)
 
     # Author
