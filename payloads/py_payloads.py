@@ -10,7 +10,7 @@ escape_seq: list = [
 #  OBJECT ESCAPE
 "hacker\\",
 "hacker)",
-"hacker\)",
+"hacker\\)",
 "hacker\\\\",
 "hacker\xE2\x9C\x94",
 "hacker\xF0\x9F\x8D\xA3",
@@ -130,7 +130,7 @@ endstream''',
 # HTML ESCAPE (Target links)
 '''<a href='hacker\\'>hacker\\</a>''',
 '''<a href='hacker)'>hacker)</a>''',
-'''<a href='hacker\)'>hacker\)</a>''',
+'''<a href='hacker\\)'>hacker\\)</a>''',
 '''<a href='hacker\\\\'>hacker\\\\</a>''',
 '''<a href='hacker\xE2\x9C\x94'>hacker\xE2\x9C\x94</a>''',
 '''<a href='hacker\xF0\x9F\x8D\xA3'>hacker\xF0\x9F\x8D\xA3</a>''',
