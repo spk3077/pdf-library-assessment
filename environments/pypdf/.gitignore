@@ -1,0 +1,8 @@
+pdfs/*.pdf
+pypdf_test/py_payloads.py
+pypdf_test/pypdf_test/__pycache__/
+pypdf_test/__pycache__/
+pypdf_test/base/__pycache__/
+pypdf_test/buffer/__pycache__/
+pypdf_test/injection/__pycache__/
+pypdf_test/osi/__pycache__/
