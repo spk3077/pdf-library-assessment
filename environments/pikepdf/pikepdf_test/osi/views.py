@@ -123,7 +123,7 @@ def index(request):
             Border=[0, 0, 1],
             A=pikepdf.Dictionary(
                 S=pikepdf.Name('/URI'),
-                URI="seq"
+                URI=seq
             )
         )
 
