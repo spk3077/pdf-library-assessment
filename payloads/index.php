@@ -1,4 +1,4 @@
-<!-- File: dos.php -->
+<!-- File: index.php -->
 <!-- Assignment: MS Capstone -->
 <!-- Lanuguage: PHP -->
 <!-- Author: Sean Kells <spk3077@rit.edu> -->

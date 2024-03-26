@@ -25,5 +25,12 @@ $pdf->setCompression(false);
 $pdf->AddPage();
 $pdf->Output('/var/www/myapp/pdfs/notext.pdf', 'F');
 
+// PDF generator for pypdf
+$pdf = new TCPDF();
+$pdf->setFont('times', '', 14, '', true);
+$pdf->setCompression(false);
+$pdf->AddPage();
+$pdf->Text(40, 40, "DOGTEST");
+$pdf->Output('/var/www/myapp/pdfs/pypdf.pdf', 'F');
 ?>
 <h1 style="text-align:center;">Created Example!</h1>

@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+import sys
 import os
 
 from pypdf import PdfReader, PdfWriter, PageObject
 from pypdf.annotations import FreeText, Line, Link, Popup, Text
+
+sys.path.insert(0, "/usr/src/app")
+from py_payloads import escape_seq
 
 def index(request):
     # Delete existing PDFs
@@ -20,54 +24,107 @@ def index(request):
     # Author
     count = 0
     for seq in escape_seq:
-        pdf_writer = PdfWriter()
-        pdf_writer.add_blank_page(width=210, height=297)
-
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
         metadata = {
             '/Title': 'Title',
+            '/Author': seq,
+            '/Subject': 'Subject',
+            '/Creator': 'Creator'
+        }
+        writer.add_metadata(metadata)
+
+        # Write the annotated file to disk
+        with open("/pdfs/author" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
+        
+        count += 1
+
+    # Title
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
+        metadata = {
+            '/Title': seq,
             '/Author': 'Author',
             '/Subject': 'Subject',
             '/Creator': 'Creator'
         }
-        pdf_writer.add_metadata(metadata)
-
-        # Test
-        # Read the existing PDF
-        existing_pdf = PdfReader(open("original.pdf", "rb"))
-        output = PdfFileWriter()
-
-        # Add the text (which is the new pdf) on the existing page
-        page = existing_pdf.getPage(0)
-        page.mergePage(new_pdf.getPage(0))
-        output.addPage(page)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        # Add the text object to the page
-        page_object.add_text(text_object)
+        writer.add_metadata(metadata)
 
         # Write the annotated file to disk
-        with open("/pdfs/author.pdf", "wb") as fp:
-            pdf_writer.write(fp)
+        with open("/pdfs/title" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
         
         count += 1
 
+    # Subject
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
+        metadata = {
+            '/Title': 'Title',
+            '/Author': 'Author',
+            '/Subject': seq,
+            '/Creator': 'Creator'
+        }
+        writer.add_metadata(metadata)
 
-        # Create the annotation and add it
+        # Write the annotated file to disk
+        with open("/pdfs/subject" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
+        
+        count += 1
+
+    # Creator
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
+        metadata = {
+            '/Title': 'Title',
+            '/Author': 'Author',
+            '/Subject': 'Subject',
+            '/Creator': seq
+        }
+        writer.add_metadata(metadata)
+
+        # Write the annotated file to disk
+        with open("/pdfs/creator" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
+
+        count += 1
+
+    # FreeText
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
+
         annotation = FreeText(
-            text="Hello World\nThis is the second line!",
+            text=seq,
             rect=(50, 550, 200, 650),
             font="Arial",
             bold=True,
@@ -77,59 +134,107 @@ def index(request):
             border_color="0000ff",
             background_color="cdcdcd",
         )
-    writer.add_annotation(page_number=0, annotation=annotation)
+        writer.add_annotation(page_number=0, annotation=annotation)
 
-    pdf_path = os.path.join(RESOURCE_ROOT, "crazyones.pdf")
-    reader = PdfReader(pdf_path)
-    page = reader.pages[0]
-    writer = PdfWriter()
-    writer.add_page(page)
+        # Write the annotated file to disk
+        with open("/pdfs/freetext" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
 
-    # Add the line
-    annotation = Line(
-        text="Hello World\nLine2",
-        rect=(50, 550, 200, 650),
-        p1=(50, 550),
-        p2=(200, 650),
-    )
-    writer.add_annotation(page_number=0, annotation=annotation)
+        count += 1
 
-    # Arrange
-    writer = PdfWriter()
-    writer.append(os.path.join(RESOURCE_ROOT, "crazyones.pdf"), [0])
+    # Line
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
 
-    # Act
-    text_annotation = writer.add_annotation(
-        0,
-        Text(
-            text="Hello World\nThis is the second line!",
+        annotation = Line(
+            text=seq,
+            rect=(50, 550, 200, 650),
+            p1=(50, 550),
+            p2=(200, 650),
+        )
+        writer.add_annotation(page_number=0, annotation=annotation)
+
+        # Write the annotated file to disk
+        with open("/pdfs/line" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
+
+        count += 1
+
+    # Text Annotation
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
+
+        text_annotation = writer.add_annotation(
+            0,
+            Text(
+                text=seq,
+                rect=(50, 550, 200, 650),
+                open=True,
+            ),
+        )
+
+        popup_annotation = Popup(
             rect=(50, 550, 200, 650),
             open=True,
-        ),
-    )
+            parent=text_annotation,  # use the output of add_annotation
+        )
 
-    popup_annotation = Popup(
-        rect=(50, 550, 200, 650),
-        open=True,
-        parent=text_annotation,  # use the output of add_annotation
-    )
+        # Write the annotated file to disk
+        with open("/pdfs/textannot" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
 
-    pdf_path = os.path.join(RESOURCE_ROOT, "crazyones.pdf")
-    reader = PdfReader(pdf_path)
-    page = reader.pages[0]
-    writer = PdfWriter()
-    writer.add_page(page)
+        count += 1
 
-    # Add the line
-    annotation = Link(
-        rect=(50, 550, 200, 650),
-        url="https://martin-thoma.com/",
-    )
-    pdf_writer.add_uri()
-    writer.add_annotation(page_number=0, annotation=annotation)
+    # Link
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
 
-    # Write the annotated file to disk
-    with open("annotated-pdf.pdf", "wb") as fp:
-        writer.write(fp)
+        annotation = Link(
+            rect=(50, 550, 200, 650),
+            url=seq,
+        )
+        writer.add_annotation(page_number=0, annotation=annotation)
+
+        # Write the annotated file to disk
+        with open("/pdfs/link" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
+
+        count += 1
+
+    # URI
+    count = 0
+    for seq in escape_seq:
+        # Fill the writer with the pages you want
+        pdf_path = os.path.join("/usr/src/app/pypdf.pdf")
+        reader = PdfReader(pdf_path)
+        page = reader.pages[0]
+        writer = PdfWriter()
+        writer.add_page(page)
+
+        writer.add_uri(page_number=0, uri=seq, rect=(50, 550, 200, 650))
+
+        # Write the annotated file to disk
+        with open("/pdfs/uri" + str(count) + ".pdf", "wb") as fp:
+            writer.write(fp)
+
+        count += 1
 
     return HttpResponse("INJECTION")

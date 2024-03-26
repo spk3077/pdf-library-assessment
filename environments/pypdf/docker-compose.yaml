@@ -2,16 +2,17 @@
 # Assignment: MS Capstone
 # Lanuguage: YAML
 # Author: Sean Kells <spk3077@rit.edu>
-# Description: Runs PikePDF environment and exploit
+# Description: Runs pyPDF environment and exploit
 version: "3"
 
 services:
   webserver:
     build: .
     volumes:
-      - ./pikepdf_test:/usr/src/app
-      - ../../payloads/images/injected:/images/
+      - ./pypdf_test:/usr/src/app
+      - ./pypdf.pdf:/usr/src/app/pypdf.pdf
       - ./pdfs:/pdfs/
+      - ../../payloads/images/injected:/images/
       - ../../payloads/py_payloads.py:/usr/src/app/py_payloads.py
     ports:
       - 80:80

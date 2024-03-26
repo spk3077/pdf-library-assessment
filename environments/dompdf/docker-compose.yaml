@@ -25,7 +25,7 @@ services:
       - ./docker/php.ini:/usr/local/etc/php/php.ini
       - ../../payloads/images/injected:/var/www/myapp/images
       - ../../payloads/php_payloads.php:/var/www/myapp/php_payloads.php
-      - ../../payloads/dos.php:/var/www/myapp/dos.php
+      - ../../payloads/index.php:/var/www/myapp/index.php
   
   composer:
     image: composer:2.6.6

@@ -4,4 +4,4 @@ pdfs/*
 temp/mpdf/*
 composer.lock
 php_payloads.php
-dos.php
+index.php

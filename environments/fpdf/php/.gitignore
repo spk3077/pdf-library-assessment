@@ -3,4 +3,4 @@ images/*
 pdfs/*
 composer.lock
 php_payloads.php
-dos.php
+index.php
