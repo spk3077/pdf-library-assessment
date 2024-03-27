@@ -158,7 +158,15 @@ def index(request):
     while i < MAX_COUNT:
         doc = fitz.open()
         page = doc.new_page()
-        doc.save("/pdfs/output" + "V" * i)
+        try:
+            doc.save("/pdfs/output" + "V" * i)
+        except fitz.mupdf.FzErrorSystem as e:
+            if 'cannot remove file' in e.m_text:
+                print("File name too long")
+            else:
+                print(e)
+
+            break
         i += 1
-        
+
     return HttpResponse("BUFFER")
