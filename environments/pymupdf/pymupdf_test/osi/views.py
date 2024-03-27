@@ -7,7 +7,7 @@ import os
 import fitz
 
 sys.path.insert(0, "/usr/src/app")
-from py_payloads import escape_seq
+from py_payloads import os_commands
 
 def check_test_file(endpoint: str, command: str) -> str:
     if os.path.exists('/usr/src/app/test'):
@@ -30,8 +30,8 @@ def index(request):
         os.unlink(pdf_path)
 
     # Author
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         new_metadata = {
@@ -48,8 +48,8 @@ def index(request):
         count += 1
 
     # Title
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         new_metadata = {
@@ -61,13 +61,13 @@ def index(request):
             "producer": "Producer"
         }
         doc.set_metadata(new_metadata)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/title" + str(count) + ".pdf")
+        ret += check_test_file("Title", seq)
         count += 1
 
     # Subject
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         new_metadata = {
@@ -79,13 +79,13 @@ def index(request):
             "producer": "Producer"
         }
         doc.set_metadata(new_metadata)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/subject" + str(count) + ".pdf")
+        ret += check_test_file("Subject", seq)
         count += 1
 
     # Keywords
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         new_metadata = {
@@ -97,13 +97,13 @@ def index(request):
             "producer": "Producer"
         }
         doc.set_metadata(new_metadata)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/keywords" + str(count) + ".pdf")
+        ret += check_test_file("Keywords", seq)
         count += 1
 
     # Creator
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         new_metadata = {
@@ -115,13 +115,13 @@ def index(request):
             "producer": "Producer"
         }
         doc.set_metadata(new_metadata)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/creator" + str(count) + ".pdf")
+        ret += check_test_file("Creator", seq)
         count += 1
 
     # Producer
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         new_metadata = {
@@ -133,33 +133,33 @@ def index(request):
             "producer": seq
         }
         doc.set_metadata(new_metadata)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/producer" + str(count) + ".pdf")
+        ret += check_test_file("Producer", seq)
         count += 1
 
     # Text
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         page.insert_text((50, 100), seq, fontname="helv", fontsize=12)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/text" + str(count) + ".pdf")
+        ret += check_test_file("Text", seq)
         count += 1
 
     # HTMLbox
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         page.insert_htmlbox(fitz.Rect(0,0,50,50), seq, css="* {font-family: sans-serif;font-size:14px;}")
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/htmlbox" + str(count) + ".pdf")
+        ret += check_test_file("HTMLBox", seq)
         count += 1
 
     # Link
-    count = 0
-    for seq in escape_seq:
+    count: int = 0
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
         link = {
@@ -168,23 +168,15 @@ def index(request):
             "from": fitz.Rect(0,0,50,50)
         }
         page.insert_link(link)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/link" + str(count) + ".pdf")
+        ret += check_test_file("Link", seq)
         count += 1
 
-    # Image
-    file_paths = []  # List to store file paths
-    for root, directories, files in os.walk("/images/"):
-        for filename in files:
-            filepath = os.path.join(root, filename)
-            file_paths.append(filepath)
-
-    count = 0
-    for image_path in file_paths:
+    # Output
+    for seq in os_commands:
         doc = fitz.open()
         page = doc.new_page()
-        page.insert_image(fitz.Rect(0,0,50,50), filename=image_path)
-        page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
-        doc.save("/pdfs/image" + str(count) + ".pdf")
-        count += 1
-    return HttpResponse("OS INJECTION")
+        doc.save("/pdfs/output" + seq)
+        ret += check_test_file("Output", seq)
+
+    return HttpResponse(ret)
