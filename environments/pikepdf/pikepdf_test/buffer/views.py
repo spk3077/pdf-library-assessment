@@ -121,7 +121,15 @@ def index(request):
         pdf = Pdf.new()
         pdf.add_blank_page()
 
-        pdf.save("/pdfs/output" + "V" * i)
+        try:
+            pdf.save("/pdfs/output" + "V" * i)
+        except OSError as e:
+            if 'File name too long' in e.strerror:
+                print("File name too long")
+            else:
+                print(e)
+            
+            break
         i += 1
 
     return HttpResponse("BUFFER")

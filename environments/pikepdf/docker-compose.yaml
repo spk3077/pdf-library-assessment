@@ -13,5 +13,6 @@ services:
       - ../../payloads/images/injected:/images/
       - ./pdfs:/pdfs/
       - ../../payloads/py_payloads.py:/usr/src/app/py_payloads.py
+      - ../../payloads/views.py:/usr/src/app/base/views.py
     ports:
       - 80:80
