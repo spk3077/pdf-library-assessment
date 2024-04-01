@@ -16,5 +16,5 @@ function factorial($n){
 }
 
 $result = factorial($NUM_CALC);
-echo "The factorial of " + strval($NUM_CALC) + " is " + strval($result);
+echo "The factorial of ", strval($NUM_CALC), " is ", strval($result);
 ?>
