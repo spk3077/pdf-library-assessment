@@ -35,3 +35,5 @@ PikePDF was originallly used for Annotation testing but was found to modify Unic
 sudo apt install maven
 
 ReportLab may have been a better option for python PDF generation testing
+
+find . -type f -name "*.pdf" ! -name "decodeFlate.pdf" ! -name "decodeFlate2.pdf" -exec rm {} +

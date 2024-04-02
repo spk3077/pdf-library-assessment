@@ -9,7 +9,7 @@ require './php_payloads.php';
 use Fpdf\Fpdf;
 
 // Wipe existing PDFs
-system("rm -r /var/www/myapp/pdfs/*.pdf");
+system("rm -r /var/www/myapp/pdfs/*");
 
 // createPDF function contains the standard process for producing PDFs for all tests
 function createPDF() {
