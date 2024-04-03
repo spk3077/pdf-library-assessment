@@ -103,19 +103,29 @@ namespace main
 
         public static void Main() {
             // '<< stream' binary array
-            // static string BASE_PDF = "./decodeFlate.pdf";
-            string BASEDOMPDF_PDF = "./decodeFlate2.pdf";
-            string SEARCHED_PDF = "./loadHTML121.pdf";
+            // string TCPDF = "./decodeFlate_tcpdf.pdf";
+            // string DOMPDF = "./decodeFlate_dompdf.pdf";
+            string ITEXT = "./decodeFlate_itext.pdf";
 
-            // For Normal PDFs
-            // byte[] start_stream_seq = parse_pdf(BASE_PDF, 525, 9);
-            // byte[] edit_stream_seq = parse_pdf(BASE_PDF, 740, 9);
+            string SEARCHED_PDF = "./div7.pdf";
 
-            // For DOMPDF PDFs
-            byte[] start_stream_seq = parse_pdf(BASEDOMPDF_PDF, 609, 9);
-            byte[] edit_stream_seq = parse_pdf(BASEDOMPDF_PDF, 721, 9);
-            // Console.WriteLine(Encoding.UTF8.GetString(start_stream_seq));
-            // Console.WriteLine(Encoding.UTF8.GetString(edit_stream_seq));
+            // For TCPDF
+            // byte[] start_stream_seq = parse_pdf(TCPDF, 525, 9);
+            // byte[] edit_stream_seq = parse_pdf(TCPDF, 740, 9);
+            // int START_DISTANCE = 10;
+
+            // For DOMPDF
+            // byte[] start_stream_seq = parse_pdf(DOMPDF, 609, 9);
+            // byte[] edit_stream_seq = parse_pdf(DOMPDF, 721, 9);
+            // int START_DISTANCE = 10;
+
+            // For ITEXT
+            byte[] start_stream_seq = parse_pdf(ITEXT, 54, 8);
+            byte[] edit_stream_seq = parse_pdf(ITEXT, 138, 9);
+            int START_DISTANCE = 9;
+
+            Console.WriteLine(Encoding.UTF8.GetString(start_stream_seq));
+            Console.WriteLine(Encoding.UTF8.GetString(edit_stream_seq));
 
             long[] start_stream_pos;
             long[] end_stream_pos;
@@ -137,7 +147,7 @@ namespace main
                     continue;
                 Console.WriteLine("BEGIN STREAM");
                 try {
-                    Console.WriteLine(decompress(parse_pdf(SEARCHED_PDF, unchecked((int)se.Start) + 10, unchecked((int)se.End) - 1)));
+                    Console.WriteLine(decompress(parse_pdf(SEARCHED_PDF, unchecked((int)se.Start) + START_DISTANCE, unchecked((int)se.End) - 1)));
                 }
                 catch (Exception) {
                     Console.WriteLine(se.Start);

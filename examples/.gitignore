@@ -1,4 +1,5 @@
-!decodeFlate.pdf
-!decodeFlate2.pdf
+!decodeFlate_dompdf.pdf
+!decodeFlate_tcpdf.pdf
+!decodeFlate_itext.pdf
 decodeFlate.exe
 *.pdf
