@@ -36,4 +36,4 @@ sudo apt install maven
 
 ReportLab may have been a better option for python PDF generation testing
 
-find . -type f -name "*.pdf" ! -name "decodeFlate.pdf" ! -name "decodeFlate2.pdf" -exec rm {} +
+find . -type f -name "*.pdf" ! -name "decodeFlate_dompdf.pdf" ! -name "decodeFlate_tcpdf.pdf" ! -name "decodeFlate_itext.pdf" -exec rm {} +

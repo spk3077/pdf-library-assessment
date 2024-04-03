@@ -107,7 +107,7 @@ namespace main
             // string DOMPDF = "./decodeFlate_dompdf.pdf";
             string ITEXT = "./decodeFlate_itext.pdf";
 
-            string SEARCHED_PDF = "./div7.pdf";
+            string SEARCHED_PDF = "./text13.pdf";
 
             // For TCPDF
             // byte[] start_stream_seq = parse_pdf(TCPDF, 525, 9);
