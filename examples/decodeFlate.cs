@@ -104,10 +104,10 @@ namespace main
         public static void Main() {
             // '<< stream' binary array
             // string TCPDF = "./decodeFlate_tcpdf.pdf";
-            // string DOMPDF = "./decodeFlate_dompdf.pdf";
-            string ITEXT = "./decodeFlate_itext.pdf";
+            string DOMPDF = "./decodeFlate_dompdf.pdf";
+            // string ITEXT = "./decodeFlate_itext.pdf";
 
-            string SEARCHED_PDF = "./text13.pdf";
+            string SEARCHED_PDF = "./text41.pdf";
 
             // For TCPDF
             // byte[] start_stream_seq = parse_pdf(TCPDF, 525, 9);
@@ -115,14 +115,14 @@ namespace main
             // int START_DISTANCE = 10;
 
             // For DOMPDF
-            // byte[] start_stream_seq = parse_pdf(DOMPDF, 609, 9);
-            // byte[] edit_stream_seq = parse_pdf(DOMPDF, 721, 9);
-            // int START_DISTANCE = 10;
+            byte[] start_stream_seq = parse_pdf(DOMPDF, 609, 9);
+            byte[] edit_stream_seq = parse_pdf(DOMPDF, 721, 9);
+            int START_DISTANCE = 10;
 
             // For ITEXT
-            byte[] start_stream_seq = parse_pdf(ITEXT, 54, 8);
-            byte[] edit_stream_seq = parse_pdf(ITEXT, 138, 9);
-            int START_DISTANCE = 9;
+            // byte[] start_stream_seq = parse_pdf(ITEXT, 54, 8);
+            // byte[] edit_stream_seq = parse_pdf(ITEXT, 138, 9);
+            // int START_DISTANCE = 9;
 
             Console.WriteLine(Encoding.UTF8.GetString(start_stream_seq));
             Console.WriteLine(Encoding.UTF8.GetString(edit_stream_seq));
