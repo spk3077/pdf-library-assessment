@@ -133,6 +133,10 @@ def index(request):
     for seq in escape_seq:
         doc = fitz.open()
         page = doc.new_page()
+        new_metadata = {
+            "author": "DOGTEST",
+        }
+        doc.set_metadata(new_metadata)
         page.insert_text((50, 100), seq, fontname="helv", fontsize=12)
         page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/text" + str(count) + ".pdf")
@@ -143,6 +147,10 @@ def index(request):
     for seq in escape_seq:
         doc = fitz.open()
         page = doc.new_page()
+        new_metadata = {
+            "author": "DOGTEST",
+        }
+        doc.set_metadata(new_metadata)
         page.insert_htmlbox(fitz.Rect(0,0,50,50), seq, css="* {font-family: sans-serif;font-size:14px;}")
         page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/htmlbox" + str(count) + ".pdf")
@@ -153,6 +161,10 @@ def index(request):
     for seq in escape_seq:
         doc = fitz.open()
         page = doc.new_page()
+        new_metadata = {
+            "author": "DOGTEST",
+        }
+        doc.set_metadata(new_metadata)
         link = {
             "kind": fitz.LINK_URI,
             "uri": seq,
@@ -174,6 +186,10 @@ def index(request):
     for image_path in file_paths:
         doc = fitz.open()
         page = doc.new_page()
+        new_metadata = {
+            "author": "DOGTEST",
+        }
+        doc.set_metadata(new_metadata)
         page.insert_image(fitz.Rect(0,0,50,50), filename=image_path)
         page.insert_text((50, 100), "DOGTEST", fontname="helv", fontsize=12)
         doc.save("/pdfs/image" + str(count) + ".pdf")
