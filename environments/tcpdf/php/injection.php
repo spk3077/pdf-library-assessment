@@ -8,7 +8,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 require './php_payloads.php';
 
 // Wipe existing PDFs
-system("rm -r /var/www/myapp/pdfs/*.pdf");
+system("rm -r /var/www/myapp/pdfs/*");
 
 // createPDF function contains the standard process for producing PDFs for all tests
 function createPDF() {
@@ -16,7 +16,7 @@ function createPDF() {
     $pdf->setFont('times', '', 14, '', true);
 
     // Change this setting back and forth
-    // $pdf->setCompression(false);
+    $pdf->setCompression(false);
 
     $pdf->AddPage();
     return $pdf;

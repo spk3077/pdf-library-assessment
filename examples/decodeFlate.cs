@@ -17,7 +17,7 @@ namespace main
     class Program
     {
 
-        // Decipher what endstream would decompress into for DeFlate
+        // Decipher what 'endstream' would decompress into for DeFlate
         // Takes header of stream and the binary for 'endstream'
         // Did not successfully decompress
         public static void deflate_endstream(){
@@ -103,11 +103,17 @@ namespace main
 
         public static void Main() {
             // '<< stream' binary array
+
+            // >> stream
             // string TCPDF = "./decodeFlate_tcpdf.pdf";
+
+            // >>\nstream
             string DOMPDF = "./decodeFlate_dompdf.pdf";
+
+            // >>stream
             // string ITEXT = "./decodeFlate_itext.pdf";
 
-            string SEARCHED_PDF = "./htmlbox2.pdf";
+            string SEARCHED_PDF = "./decodeFlate_itext.pdf";
 
             // For TCPDF
             // byte[] start_stream_seq = parse_pdf(TCPDF, 525, 9);
