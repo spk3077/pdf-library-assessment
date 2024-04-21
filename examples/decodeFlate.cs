@@ -16,10 +16,10 @@ namespace main
 {
     class Program
     {
-
-        // Decipher what 'endstream' would decompress into for DeFlate
-        // Takes header of stream and the binary for 'endstream'
-        // Did not successfully decompress
+        /// <summary>
+        /// Decipher what 'endstream' would decompress into for DeFlate. Takes header of stream and the binary for 'endstream'.
+        /// Testing Results: Did not successfully decompress
+        /// </summary>
         public static void deflate_endstream(){
             byte[] header = parse_pdf("", 535, 4);
             byte[] endstream = parse_pdf("", 740, 9);
@@ -29,7 +29,11 @@ namespace main
             Console.WriteLine(Encoding.UTF8.GetString(ret));
             Console.WriteLine(decompress(ret));
         }
-
+        /// <summary>
+        /// Find all the byte index positions of the byteSequence in the stream and return them in an array.
+        /// </summary>
+        /// <param name="stream">The PDF stream content to parse.</param>
+        /// <param name="byteSequence">The bytesequence to search for</param>
         public static long[] find_position(Stream stream, byte[] byteSequence) {
             long[] ret = new long[50];
             if (byteSequence.Length > stream.Length)
@@ -53,7 +57,11 @@ namespace main
 
             return ret;
         }
-
+        /// <summary>
+        /// Check if seqBytes is within the bytes array
+        /// </summary>
+        /// <param name="bytes">The array to search</param>
+        /// <param name="seqBytes">The byte sequence to search for inside 'bytes'</param>
         private static int pad_left_sequence(byte[] bytes, byte[] seqBytes) {
             int i = 1;
             while (i < bytes.Length)
@@ -69,7 +77,11 @@ namespace main
             }
             return i;
         }
-
+        /// <summary>
+        /// Check if seqBytes is within the bytes array
+        /// </summary>
+        /// <param name="bytes">The array to search</param>
+        /// <param name="seqBytes">The byte sequence to search for inside 'bytes'</param>
         static byte[] parse_pdf(string file, int start, int size){
             var data = new byte[size];
             int actualRead;
@@ -113,7 +125,7 @@ namespace main
             // >>stream
             // string ITEXT = "./decodeFlate_itext.pdf";
 
-            string SEARCHED_PDF = "./decodeFlate_itext.pdf";
+            string SEARCHED_PDF = "./text39.pdf";
 
             // For TCPDF
             // byte[] start_stream_seq = parse_pdf(TCPDF, 525, 9);
